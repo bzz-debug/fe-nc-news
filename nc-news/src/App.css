@@ -40,3 +40,24 @@
 .read-the-docs {
   color: #888;
 }
+
+.article-card {
+  margin-bottom: 150px;
+  background-color: gray;
+  border-color: black;
+  border: 5px solid black;
+  border-radius: 50px;
+}
+
+.article-card:hover {
+  transform: scale(1.1);
+}
+
+#article-list-title {
+  margin-bottom: 75px;
+}
+
+#article-wrapper {
+  display: flex;
+  flex-direction: column;
+}

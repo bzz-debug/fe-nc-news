@@ -3,7 +3,7 @@ import api from "./api";
 import { useState, useEffect } from "react";
 import ArticleCards from "./ArticleCards";
 
-function ArticleList() {
+function ArticleList({ articleId, setArticleId }) {
   const [articleList, setArticleList] = useState([]);
   const [topicName, setTopicName] = useState("");
 
@@ -13,7 +13,6 @@ function ArticleList() {
         `https://bzz-nc-news.onrender.com/api/articles?topic_name=${topicName}`
       )
       .then((result) => {
-        console.log(result.data.articles);
         setArticleList(result.data.articles);
       });
   }, []);
@@ -23,7 +22,13 @@ function ArticleList() {
       <div id="article-wrapper">
         <h1 id="article-list-title">ALL ARTICLES</h1>
         {articleList.map((article) => {
-          return <ArticleCards article={article} />;
+          return (
+            <ArticleCards
+              article={article}
+              articleId={articleId}
+              setArticleId={setArticleId}
+            />
+          );
           return "Hello from the article list";
         })}
       </div>

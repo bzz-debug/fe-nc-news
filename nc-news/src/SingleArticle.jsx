@@ -11,7 +11,6 @@ function SingleArticle() {
       .get(`https://bzz-nc-news.onrender.com/api/articles/${article_id}`)
       .then((result) => {
         setArticle(result.data.article);
-        console.log(result.data.article);
       });
   }, []);
 

@@ -47,6 +47,7 @@
   border-color: black;
   border: 5px solid black;
   border-radius: 50px;
+  display: inline-block;
 }
 
 .article-card:hover {
@@ -60,4 +61,8 @@
 #article-wrapper {
   display: flex;
   flex-direction: column;
+}
+
+.extras {
+  text-align: left;
 }

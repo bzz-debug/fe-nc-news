@@ -1,12 +1,26 @@
-function ArticleCards({ article }) {
+import { useState } from "react";
+import { Link } from "react-router";
+
+function ArticleCards({ article, articleId, setArticleId }) {
+  const handleClick = () => {
+    setArticleId(article.article_id);
+  };
+
   return (
     <>
-      <div className="article-card">
-        <h2>{article.title}</h2>
-        <h3>topic: {article.topic}</h3>
-        <h3>author: {article.author}</h3>
-      </div>
+      <Link to={`/articles/${articleId}`}>
+        <button onClick={handleClick}>
+          <div className="article-card">
+            <h2>{article.title}</h2>
+            <h3>topic: {article.topic}</h3>
+            <h3>author: {article.author}</h3>
+          </div>
+        </button>
+      </Link>
     </>
   );
 }
+
+//I need to figure out how to change the article ID before the link to the other component happens, currently it is rendering the component before updating
+
 export default ArticleCards;

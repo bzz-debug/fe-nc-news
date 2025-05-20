@@ -2,14 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router";
 
 function ArticleCards({ article, articleId, setArticleId }) {
-  const handleClick = () => {
-    setArticleId(article.article_id);
-  };
-
   return (
     <>
-      <Link to={`/articles/${articleId}`}>
-        <button onClick={handleClick}>
+      <Link to={`/articles/${article.article_id}`}>
+        <button>
           <div className="article-card">
             <h2>{article.title}</h2>
             <h3>topic: {article.topic}</h3>

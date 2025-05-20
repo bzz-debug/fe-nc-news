@@ -9,7 +9,6 @@ import SingleArticle from "./SingleArticle";
 
 function App() {
   const [count, setCount] = useState(0);
-  const [articleId, setArticleId] = useState("");
 
   return (
     <>
@@ -17,12 +16,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/articles"
-            element={
-              <ArticleList setArticleId={setArticleId} articleId={articleId} />
-            }
-          />
+          <Route path="/articles" element={<ArticleList />} />
           <Route path="articles/:article_id" element={<SingleArticle />} />
         </Routes>
         ;

@@ -34,4 +34,12 @@ export const patchApiVotesDown = (article_id) => {
   );
 };
 
+export const postNewComment = (article_id, commentData) => {
+  return api.post(
+    `https://bzz-nc-news.onrender.com/api/articles/${article_id}/comments`,
+    commentData
+  );
+};
+// here is where I need to tie it to the form input value or something like that - check over what I did on the marketplace app.
+
 export default api;

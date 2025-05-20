@@ -17,6 +17,4 @@ function ArticleCards({ article, articleId, setArticleId }) {
   );
 }
 
-//I need to figure out how to change the article ID before the link to the other component happens, currently it is rendering the component before updating
-
 export default ArticleCards;

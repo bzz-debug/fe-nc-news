@@ -1,11 +1,19 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api, { getArticleById, getCommentsByArticleId } from "./api";
+import api, {
+  getArticleById,
+  getCommentsByArticleId,
+  patchApiVotesDown,
+  patchApiVotesUp,
+} from "./api";
 import Comments from "./Comments";
 
 function SingleArticle() {
   const [article, setArticle] = useState("");
   const [commentsList, setCommentsList] = useState([]);
+  const [hasUpVoted, setHasUpVoted] = useState(false);
+  const [hasDownVoted, setHasDownVoted] = useState(false);
+  const [err, setErr] = useState(false);
 
   const { article_id } = useParams();
 
@@ -21,6 +29,28 @@ function SingleArticle() {
     });
   }, []);
 
+  function handleUpVote() {
+    if (!hasUpVoted) {
+      setHasUpVoted(true);
+      patchApiVotesUp(article_id)
+        .then((result) => {})
+        .catch((err) => {
+          setErr(true);
+        });
+    }
+  }
+
+  function handleDownVote() {
+    if (!hasDownVoted) {
+      setHasDownVoted(true);
+      patchApiVotesDown(article_id)
+        .then((result) => {})
+        .catch((err) => {
+          setErr(true);
+        });
+    }
+  }
+
   return (
     <>
       <img
@@ -32,8 +62,30 @@ function SingleArticle() {
       <div className="article-body-wrapper">
         <p>{article.body}</p>
         <p className="extras">
-          <b>votes: {article.votes}</b>
+          <b>
+            votes:{" "}
+            {hasUpVoted && !err
+              ? article.votes + 1
+              : hasDownVoted && !err
+              ? article.votes - 1
+              : article.votes}
+          </b>
         </p>
+        {err ? (
+          <>
+            <p>Request failed, please try again</p>
+            <button onClick={handleUpVote}>upvote</button>
+            <button onClick={handleDownVote}>downvote</button>
+          </>
+        ) : hasUpVoted || hasDownVoted ? (
+          <p> Thanks! </p>
+        ) : (
+          <>
+            <button onClick={handleUpVote}>upvote</button>
+            <button onClick={handleDownVote}>downvote</button>
+          </>
+        )}
+
         <p id="comment-title">
           <b>Comments: {article.comment_count}</b>
         </p>

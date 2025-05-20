@@ -7,7 +7,7 @@ function Home() {
     <div className="category-buttons">
       <h1 className="title">Natter</h1>
       <Link to={"/articles"}>
-        <button>Let's Gossip</button>
+        <button id="intro-button">Let's Gossip</button>
       </Link>
     </div>
   );

@@ -64,5 +64,10 @@
 }
 
 .extras {
-  text-align: left;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+#comment-title {
+  font-size: 2rem;
 }

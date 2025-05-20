@@ -50,6 +50,12 @@ button {
   height: auto;
   padding: 0;
 }
+
+#intro-button {
+  background-color: silver;
+  padding: 12px;
+}
+
 button:hover {
   border: 3px solid purple;
 }

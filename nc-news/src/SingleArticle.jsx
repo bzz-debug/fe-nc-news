@@ -1,17 +1,24 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "./api";
+import api, { getArticleById, getCommentsByArticleId } from "./api";
+import Comments from "./Comments";
 
 function SingleArticle() {
   const [article, setArticle] = useState("");
+  const [commentsList, setCommentsList] = useState([]);
+
   const { article_id } = useParams();
 
   useEffect(() => {
-    api
-      .get(`https://bzz-nc-news.onrender.com/api/articles/${article_id}`)
-      .then((result) => {
-        setArticle(result.data.article);
-      });
+    getArticleById(article_id).then((result) => {
+      setArticle(result.data.article);
+    });
+  }, [article_id]);
+
+  useEffect(() => {
+    getCommentsByArticleId(article_id).then((result) => {
+      setCommentsList(result.data.comments);
+    });
   }, []);
 
   return (
@@ -27,9 +34,14 @@ function SingleArticle() {
         <p className="extras">
           <b>votes: {article.votes}</b>
         </p>
-        <p className="extras">
-          <b>comments:{article.comment_count}</b>
+        <p id="comment-title">
+          <b>Comments: {article.comment_count}</b>
         </p>
+      </div>
+      <div id="comments-wrapper">
+        {commentsList.map((comment) => {
+          return <Comments comment={comment} />;
+        })}
       </div>
     </>
   );

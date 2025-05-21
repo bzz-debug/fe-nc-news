@@ -18,7 +18,7 @@ function ArticleList({ articleId, setArticleId }) {
       <div id="article-wrapper">
         <h1 id="article-list-title">ALL ARTICLES</h1>
         {articleList.map((article) => {
-          return <ArticleCards article={article} />;
+          return <ArticleCards article={article} key={article.article_id} />;
         })}
       </div>
     </>

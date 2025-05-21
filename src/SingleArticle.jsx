@@ -20,6 +20,8 @@ function SingleArticle() {
     body: "",
   });
   const [commentErr, setCommentErr] = useState(false);
+  const [commentPosted, setCommentPosted] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   const { article_id } = useParams();
 
@@ -69,8 +71,11 @@ function SingleArticle() {
   function handleSubmitComment(event) {
     event.preventDefault();
     postNewComment(article_id, commentData)
-      .then((result) => console.log(result))
-
+      .then((result) =>
+        setCommentPosted(true).then(() => {
+          setButtonClicked(true);
+        })
+      )
       .catch((err) => {
         console.log(err.response.data.message);
         setCommentErr(err.response.data.message);
@@ -122,10 +127,18 @@ function SingleArticle() {
               Your comment:
               <textarea name="body" id="" onChange={handleType}></textarea>
             </label>{" "}
-            <button type="submit" onClick={handleSubmitComment}>
-              Submit
-            </button>
-            {commentErr ? <p> {commentErr} </p> : <p>Comment Posted!</p>}
+            {commentPosted ? (
+              <p>comment posted!</p>
+            ) : (
+              <button
+                type="submit"
+                id="comment-submit-button"
+                onClick={handleSubmitComment}
+              >
+                Submit
+              </button>
+            )}
+            {commentErr ? <p> {commentErr} </p> : null}
           </form>
         </div>
         <p id="comment-title">
@@ -134,7 +147,7 @@ function SingleArticle() {
       </div>
       <div id="comments-wrapper">
         {commentsList.map((comment) => {
-          return <Comments comment={comment} />;
+          return <Comments comment={comment} key={comment.comment_id} />;
         })}
       </div>
     </>

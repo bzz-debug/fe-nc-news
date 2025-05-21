@@ -74,3 +74,26 @@
 
 #comment-submit-button {
 }
+
+.comment-card {
+  border: 1px dashed gray;
+  padding-top: 5px;
+}
+
+#delete-button {
+  margin-bottom: 20px;
+}
+
+.vote-button {
+  margin: 0 50px;
+  padding: 2px;
+  border: 1px solid black;
+}
+
+#upvote {
+  background-color: lightgreen;
+}
+
+#downvote {
+  background-color: red;
+}

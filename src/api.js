@@ -40,6 +40,11 @@ export const postNewComment = (article_id, commentData) => {
     commentData
   );
 };
-// here is where I need to tie it to the form input value or something like that - check over what I did on the marketplace app.
+
+export const deleteComment = (comment_id) => {
+  return api.delete(
+    `https://bzz-nc-news.onrender.com/api/comments/${comment_id}`
+  );
+};
 
 export default api;

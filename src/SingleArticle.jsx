@@ -21,7 +21,7 @@ function SingleArticle() {
   });
   const [commentErr, setCommentErr] = useState(false);
   const [commentPosted, setCommentPosted] = useState(false);
-  const [buttonClicked, setButtonClicked] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState("");
 
   const { article_id } = useParams();
 
@@ -71,16 +71,21 @@ function SingleArticle() {
   function handleSubmitComment(event) {
     event.preventDefault();
     postNewComment(article_id, commentData)
-      .then((result) =>
-        setCommentPosted(true).then(() => {
-          setButtonClicked(true);
-        })
-      )
+      .then((result) => {
+        console.log(result);
+        setLoggedInUser(result.data.postedComment.username);
+
+        setCommentPosted(true);
+      })
+      .then((result) => {
+        // setButtonClicked(true);
+      })
+
       .catch((err) => {
-        console.log(err.response.data.message);
         setCommentErr(err.response.data.message);
       });
   }
+  console.log(loggedInUser);
 
   return (
     <>
@@ -112,8 +117,16 @@ function SingleArticle() {
           <p> Your vote has been counted! </p>
         ) : (
           <>
-            <button onClick={handleUpVote}>upvote</button>
-            <button onClick={handleDownVote}>downvote</button>
+            <button className="vote-button" id="upvote" onClick={handleUpVote}>
+              upvote
+            </button>
+            <button
+              className="vote-button"
+              id="downvote"
+              onClick={handleDownVote}
+            >
+              downvote
+            </button>
           </>
         )}
         <div id="new-comment-wrapper">
@@ -147,7 +160,13 @@ function SingleArticle() {
       </div>
       <div id="comments-wrapper">
         {commentsList.map((comment) => {
-          return <Comments comment={comment} key={comment.comment_id} />;
+          return (
+            <Comments
+              comment={comment}
+              key={comment.comment_id}
+              loggedInUser={loggedInUser}
+            />
+          );
         })}
       </div>
     </>

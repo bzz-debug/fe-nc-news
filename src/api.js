@@ -6,7 +6,7 @@ const api = axios.create({
 
 export const getArticles = (topicName) => {
   return api.get(
-    `https://bzz-nc-news.onrender.com/api/articles?topic_name=${topicName}`
+    `https://bzz-nc-news.onrender.com/api/articles?topic=${topicName}`
   );
 };
 

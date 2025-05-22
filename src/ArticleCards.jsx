@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { useState } from 'react';
+import { Link } from 'react-router';
 
 function ArticleCards({ article, articleId, setArticleId }) {
   return (
     <>
-      <Link to={`/articles/${article.article_id}`}>
+      <Link to={`/articles/single/${article.article_id}`}>
         {/* <button> */}
         <div className="article-card">
           <h2>{article.title}</h2>

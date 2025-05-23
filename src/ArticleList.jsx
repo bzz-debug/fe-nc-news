@@ -29,101 +29,121 @@ function ArticleList({ articleId, setArticleId }) {
   const { topic } = useParams();
   console.log(topic);
 
-  function handleQuery(event) {
-    console.log(event.target.value);
-  }
+  // function handleQuery(event) {
+  //   console.log(event.target.value);
+  // }
 
-  const value = searchParams.get('sort_by');
+  const sortBy = searchParams.get('sort_by');
   // console.log(value);
   const orderBy = searchParams.get('order') || 'desc';
   console.log(orderBy);
 
-  useEffect(() => {
-    getArticlesSorted(value, orderBy)
-      .then((result) => {
-        console.log(result);
-        setArticleList(result.data.articles);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-        setTopicErr(err.response.data);
-      });
-  }, [value, orderBy]);
+  // useEffect(() => {
+  //   getArticlesSorted(value, orderBy)
+  //     .then((result) => {
+  //       console.log(result);
+  //       setArticleList(result.data.articles);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.response.data);
+  //       setTopicErr(err.response.data);
+  //     });
+  // }, [value, orderBy]);
 
   // getArticlesSorted(searchParams.sort_by);
 
-  function handleTopicChange(nameOfTopic) {
-    setTopicName(nameOfTopic);
-  }
+  // function handleTopicChange(nameOfTopic) {
+  //   setTopicName(nameOfTopic);
+  // }
 
   useEffect(() => {
     if (topic) {
-      getArticles(topic).then((result) => {
-        console.log(result.data.articles, topic);
-        if (result.data.articles) {
-          setArticleList(result.data.articles);
-        }
-      });
+      getArticles(topic, sortBy, orderBy)
+        .then((result) => {
+          console.log(result.data.articles, topic);
+          if (result.data.articles) {
+            setArticleList(result.data.articles);
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+          setTopicErr(err.response.data.message);
+        });
     } else {
-      getArticles('').then((result) => {
-        console.log(result.data.articles, topic);
-        if (result.data.articles) {
-          setArticleList(result.data.articles);
-        }
-      });
+      getArticles('', sortBy, orderBy)
+        .then((result) => {
+          console.log(result.data.articles, topic);
+          if (result.data.articles) {
+            setArticleList(result.data.articles);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }, [topic]);
+  }, [topic, sortBy, orderBy]);
 
   return (
     <>
-      <header>
-        <Link to="/articles/">All</Link>
-        <Link to="/articles/cooking">Cooking</Link>
-        <Link to="/articles/coding">Coding</Link>
-        <Link to="/articles/football">Football</Link>
-      </header>
-      <div id="article-wrapper">
-        <span>
-          {' '}
-          <h1 id="article-list-title">
-            {topicName ? topic.toUpperCase() : 'ALL'} ARTICLES
-          </h1>{' '}
-          <form action="" id="sort-by-dropdown">
-            <label htmlFor="SORT BY">SORT BY</label>
-            <select
-              onChange={(event) => {
-                setSearchParams({
-                  sort_by: event.target.value,
-                  order: orderBy,
-                });
-                handleQuery(event);
-              }}
-              name="SORT BY"
-              id=""
-            >
-              SORT BY
-              <option value="created_at">date</option>
-              <option value="comment_count">comment count</option>
-              <option value="votes">votes</option>
-            </select>
-            <select
-              onChange={(event) => {
-                setSearchParams({ sort_by: value, order: event.target.value });
-                handleQuery(event);
-              }}
-              name="SORT BY"
-              id=""
-            >
-              <option value="desc">Descending</option>
-              <option value="asc">Ascending</option>
-            </select>
-          </form>
-        </span>
+      {topicErr ? (
+        <h1>{topicErr}</h1>
+      ) : (
+        <div>
+          <header>
+            <Link to="/articles/">All</Link>
+            <Link to="/articles/cooking">Cooking</Link>
+            <Link to="/articles/coding">Coding</Link>
+            <Link to="/articles/football">Football</Link>
+          </header>
+          <div id="article-wrapper">
+            <span>
+              {' '}
+              <h1 id="article-list-title">
+                {topicName ? topic.toUpperCase() : 'ALL'} ARTICLES
+              </h1>{' '}
+              <form action="" id="sort-by-dropdown">
+                <label htmlFor="SORT BY">SORT BY</label>
+                <select
+                  onChange={(event) => {
+                    setSearchParams({
+                      sort_by: event.target.value,
+                      order: orderBy,
+                    });
+                    handleQuery(event);
+                  }}
+                  name="SORT BY"
+                  id=""
+                >
+                  SORT BY
+                  <option value="created_at">date</option>
+                  <option value="comment_count">comment count</option>
+                  <option value="votes">votes</option>
+                </select>
+                <select
+                  onChange={(event) => {
+                    setSearchParams({
+                      sort_by: sortBy,
+                      order: event.target.value,
+                    });
+                    handleQuery(event);
+                  }}
+                  name="SORT BY"
+                  id=""
+                >
+                  <option value="desc">Descending</option>
+                  <option value="asc">Ascending</option>
+                </select>
+              </form>
+            </span>
 
-        {articleList.map((article) => {
-          return <ArticleCards article={article} key={article.article_id} />;
-        })}
-      </div>
+            {articleList.map((article) => {
+              return (
+                <ArticleCards article={article} key={article.article_id} />
+              );
+            })}
+          </div>
+        </div>
+      )}
     </>
   );
 }

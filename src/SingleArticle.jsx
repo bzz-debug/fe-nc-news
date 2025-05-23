@@ -24,8 +24,9 @@ function SingleArticle() {
   const [commentErr, setCommentErr] = useState(false);
   const [commentPosted, setCommentPosted] = useState(false);
 
-  const { setLoggedInUser, loggedInUser, isLoggedIn } =
+  const { setLoggedInUser, loggedInUser, isLoggedIn, storedLoggedInUser } =
     useContext(LogInContext);
+  console.log(loggedInUser);
 
   const { article_id } = useParams();
 
@@ -188,6 +189,7 @@ function SingleArticle() {
                   comment={comment}
                   key={comment.comment_id}
                   loggedInUser={loggedInUser}
+                  storedLoggedInUser={storedLoggedInUser}
                 />
               );
             })}

@@ -4,9 +4,9 @@ import api from './api';
 import { LogInContext } from './LoggedInUser';
 
 function Home() {
-  const { setLoggedInUser, loggedInUser, isLoggedIn } =
+  const { setLoggedInUser, loggedInUser, isLoggedIn, storedLoggedInUser } =
     useContext(LogInContext);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(storedLoggedInUser);
   console.log(user);
 
   function handleLogin(event) {

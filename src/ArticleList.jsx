@@ -12,6 +12,19 @@ function ArticleList({ articleId, setArticleId }) {
   const [articleList, setArticleList] = useState([]);
   const [topicName, setTopicName] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
+  const [topicErr, setTopicErr] = useState(false);
+
+  /*
+  
+  the error handling isnt working because i have two useEffects which are both working at the same time and conflicting with each other, so if I set error state in both of them, the browser doesnt know whether to rendor an error and will render the last state.
+
+  I need to combine the two into one useEffect function.
+
+  Jim advised that I should also handle the get requests with one function and pass it three params. 
+
+  I am thinking I could maybe just call the getArticles function and pass a ${query} variable to it, as well as the three params. This may then enable me to make dynamic get requests that cover all potential queries. This MIGHT then also let me handle errors dynamically, when the user puts in a dodgy URL on the main page 
+
+  */
 
   const { topic } = useParams();
   console.log(topic);
@@ -26,10 +39,15 @@ function ArticleList({ articleId, setArticleId }) {
   console.log(orderBy);
 
   useEffect(() => {
-    getArticlesSorted(value, orderBy).then((result) => {
-      console.log(result);
-      setArticleList(result.data.articles);
-    });
+    getArticlesSorted(value, orderBy)
+      .then((result) => {
+        console.log(result);
+        setArticleList(result.data.articles);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        setTopicErr(err.response.data);
+      });
   }, [value, orderBy]);
 
   // getArticlesSorted(searchParams.sort_by);
@@ -39,57 +57,36 @@ function ArticleList({ articleId, setArticleId }) {
   }
 
   useEffect(() => {
-    getArticles(topicName).then((result) => {
-      console.log(result.data.articles, topicName);
-      if (result.data.articles) {
-        setArticleList(result.data.articles);
-      }
-    });
-  }, [topicName]);
-
-  // I have eventually, after many hours, managed to get the URL to change when I filter by topic. However, I have had to hard code it in, as you can see below. Please let me know how I can do this more dynamically.
+    if (topic) {
+      getArticles(topic).then((result) => {
+        console.log(result.data.articles, topic);
+        if (result.data.articles) {
+          setArticleList(result.data.articles);
+        }
+      });
+    } else {
+      getArticles('').then((result) => {
+        console.log(result.data.articles, topic);
+        if (result.data.articles) {
+          setArticleList(result.data.articles);
+        }
+      });
+    }
+  }, [topic]);
 
   return (
     <>
       <header>
-        <Link to="/articles/">
-          <button
-            className="topic-buttons"
-            onClick={() => handleTopicChange('')}
-          >
-            All
-          </button>
-        </Link>
-        <Link to="/articles/cooking">
-          <button
-            className="topic-buttons"
-            onClick={() => handleTopicChange('cooking')}
-          >
-            Cooking
-          </button>
-        </Link>
-        <Link to="/articles/coding">
-          <button
-            className="topic-buttons"
-            onClick={() => handleTopicChange('coding')}
-          >
-            Coding
-          </button>
-        </Link>
-        <Link to="/articles/football">
-          <button
-            className="topic-buttons"
-            onClick={() => handleTopicChange('football')}
-          >
-            Football
-          </button>
-        </Link>
+        <Link to="/articles/">All</Link>
+        <Link to="/articles/cooking">Cooking</Link>
+        <Link to="/articles/coding">Coding</Link>
+        <Link to="/articles/football">Football</Link>
       </header>
       <div id="article-wrapper">
         <span>
           {' '}
           <h1 id="article-list-title">
-            {topic ? topic.toUpperCase() : 'ALL'} ARTICLES
+            {topicName ? topic.toUpperCase() : 'ALL'} ARTICLES
           </h1>{' '}
           <form action="" id="sort-by-dropdown">
             <label htmlFor="SORT BY">SORT BY</label>

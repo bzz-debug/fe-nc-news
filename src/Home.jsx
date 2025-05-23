@@ -7,7 +7,6 @@ function Home() {
   const { setLoggedInUser, loggedInUser, isLoggedIn, storedLoggedInUser } =
     useContext(LogInContext);
   const [user, setUser] = useState(storedLoggedInUser);
-  console.log(user);
 
   function handleLogin(event) {
     event.preventDefault();
@@ -18,11 +17,11 @@ function Home() {
     <div className="category-buttons">
       <h1 className="title">Natter</h1>
       <label htmlFor="username-selection">Who are you: </label>
-      <form onSubmit={handleLogin}>
+      <form>
         <select
           name="username-selection"
           onChange={(event) => {
-            setUser(event.target.value);
+            setLoggedInUser(event.target.value);
           }}
         >
           <option value="tickle122">tickle122</option>
@@ -32,7 +31,6 @@ function Home() {
           <option value="weegembump">weegembump</option>
           <option value="jessjelly">jessjelly</option>
         </select>
-        <input type="submit"></input>
       </form>
       <h2>{isLoggedIn ? 'Welcome: ' + loggedInUser : 'Welcome: Guest'}</h2>
       <Link to={'/articles'}>

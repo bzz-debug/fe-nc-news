@@ -23,17 +23,22 @@ function SingleArticle() {
   const [renderedCommentData, setRenderedCommentData] = useState({});
   const [commentErr, setCommentErr] = useState(false);
   const [commentPosted, setCommentPosted] = useState(false);
-
+  const [articleErr, setArticleErr] = useState(false);
   const { setLoggedInUser, loggedInUser, isLoggedIn, storedLoggedInUser } =
     useContext(LogInContext);
-  console.log(loggedInUser);
+  // console.log(loggedInUser);
 
   const { article_id } = useParams();
 
   useEffect(() => {
-    getArticleById(article_id).then((result) => {
-      setArticle(result.data.article);
-    });
+    getArticleById(article_id)
+      .then((result) => {
+        setArticle(result.data.article);
+      })
+      .catch((err) => {
+        console.log(err);
+        setArticleErr(true);
+      });
   }, [article_id]);
 
   useEffect(() => {
@@ -81,11 +86,13 @@ function SingleArticle() {
       username: commentData.username,
       body: commentData.body,
     });
+    console.log(commentData);
     postNewComment(article_id, commentData)
       .then((result) => {
         console.log(result);
 
         setCommentPosted(true);
+        setCommentErr(false);
       })
       .then((result) => {
         // setButtonClicked(true);
@@ -99,103 +106,117 @@ function SingleArticle() {
 
   return (
     <>
-      <img
-        src={article.article_img_url}
-        alt="picture of some code on a screen"
-      />
-      <h1>{article.title}</h1>
-      <h3>Author: {article.author}</h3>
-      <div className="article-body-wrapper">
-        <p>{article.body}</p>
-        <p className="extras">
-          <b>
-            votes:{' '}
-            {hasUpVoted && !err
-              ? article.votes + 1
-              : hasDownVoted && !err
-              ? article.votes - 1
-              : article.votes}
-          </b>
-        </p>
-        {err ? (
-          <div>
-            <p>Request failed, please try again</p>
-            <button onClick={handleUpVote}>upvote</button>
-            <button onClick={handleDownVote}>downvote</button>
-          </div>
-        ) : hasUpVoted || hasDownVoted ? (
-          <p> Your vote has been counted! </p>
-        ) : (
-          <div>
-            <button className="vote-button" id="upvote" onClick={handleUpVote}>
-              upvote
-            </button>
-            <button
-              className="vote-button"
-              id="downvote"
-              onClick={handleDownVote}
-            >
-              downvote
-            </button>
-          </div>
-        )}
+      {articleErr ? (
+        <h1>No article found!</h1>
+      ) : (
         <div>
-          {isLoggedIn ? (
-            <div id="new-comment-wrapper">
-              <h2>post a comment!</h2>
-              <form>
-                <label htmlFor="">
-                  Your comment:
-                  <textarea name="body" id="" onChange={handleType}></textarea>
-                </label>{' '}
-                {commentPosted ? (
-                  <p>comment posted!</p>
-                ) : (
-                  <button
-                    type="submit"
-                    id="comment-submit-button"
-                    onClick={handleSubmitComment}
-                  >
-                    Submit
-                  </button>
-                )}
-                {commentErr ? <p> {commentErr} </p> : null}
-              </form>
-            </div>
-          ) : (
-            <p>
-              Please <button> Log in</button>
-              to post a comment{' '}
+          <img
+            src={article.article_img_url}
+            alt="picture of some code on a screen"
+          />
+          <h1>{article.title}</h1>
+          <h3>Author: {article.author}</h3>
+          <div className="article-body-wrapper">
+            <p>{article.body}</p>
+            <p className="extras">
+              <b>
+                votes:{' '}
+                {hasUpVoted && !err
+                  ? article.votes + 1
+                  : hasDownVoted && !err
+                  ? article.votes - 1
+                  : article.votes}
+              </b>
             </p>
-          )}
-
-          <p id="comment-title">
-            <b>Comments: {article.comment_count}</b>
-          </p>
-          <div id="comments-wrapper">
-            {Object.keys(renderedCommentData).length > 0 ? (
-              <div id="optimistically-rendered-comment">
-                <span>
-                  <b>{renderedCommentData.username}:</b>
-                </span>
-                <span> {renderedCommentData.body}</span>
-                <p></p>
+            {err ? (
+              <div>
+                <p>Request failed, please try again</p>
+                <button onClick={handleUpVote}>upvote</button>
+                <button onClick={handleDownVote}>downvote</button>
               </div>
-            ) : null}
+            ) : hasUpVoted || hasDownVoted ? (
+              <p> Your vote has been counted! </p>
+            ) : (
+              <div>
+                <button
+                  className="vote-button"
+                  id="upvote"
+                  onClick={handleUpVote}
+                >
+                  upvote
+                </button>
+                <button
+                  className="vote-button"
+                  id="downvote"
+                  onClick={handleDownVote}
+                >
+                  downvote
+                </button>
+              </div>
+            )}
+            <div>
+              {isLoggedIn ? (
+                <div id="new-comment-wrapper">
+                  <h2>post a comment!</h2>
+                  <form>
+                    <label htmlFor="">
+                      Your comment:
+                      <textarea
+                        name="body"
+                        id=""
+                        onChange={handleType}
+                      ></textarea>
+                    </label>{' '}
+                    {commentPosted ? (
+                      <p>comment posted!</p>
+                    ) : (
+                      <button
+                        type="submit"
+                        id="comment-submit-button"
+                        onClick={handleSubmitComment}
+                      >
+                        Submit
+                      </button>
+                    )}
+                    {commentErr ? <p> {commentErr} </p> : null}
+                  </form>
+                </div>
+              ) : (
+                <p>
+                  Please <button> Log in</button>
+                  to post a comment{' '}
+                </p>
+              )}
 
-            {commentsList.map((comment) => {
-              return (
-                <Comments
-                  comment={comment}
-                  key={comment.comment_id}
-                  loggedInUser={loggedInUser}
-                  storedLoggedInUser={storedLoggedInUser}
-                />
-              );
-            })}
+              <p id="comment-title">
+                <b>Comments: {article.comment_count}</b>
+              </p>
+              <div id="comments-wrapper">
+                {!commentErr ? (
+                  <div id="optimistically-rendered-comment">
+                    <span>
+                      <b>{renderedCommentData.username}:</b>
+                    </span>
+                    <span> {renderedCommentData.body}</span>
+                    <p></p>
+                  </div>
+                ) : null}
+
+                {commentsList.map((comment) => {
+                  return (
+                    <Comments
+                      comment={comment}
+                      key={comment.comment_id}
+                      loggedInUser={loggedInUser}
+                      storedLoggedInUser={storedLoggedInUser}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

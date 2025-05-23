@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
@@ -10,12 +10,25 @@ import { LogInContext } from './LoggedInUser';
 
 function App() {
   const [count, setCount] = useState(0);
-  const [loggedInUser, setLoggedInUser] = useState({});
-  const isLoggedIn = Object.keys(loggedInUser).length > 0;
+
+  const storedLoggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+  const [loggedInUser, setLoggedInUser] = useState(storedLoggedInUser);
+  const isLoggedIn = loggedInUser !== null;
+
+  useEffect(() => {
+    localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+  }, [loggedInUser]);
+
   return (
     <>
       <LogInContext.Provider
-        value={{ loggedInUser, setLoggedInUser, isLoggedIn }}
+        value={{
+          loggedInUser,
+          setLoggedInUser,
+          isLoggedIn,
+          storedLoggedInUser,
+        }}
       >
         <header>{/* Nav Bar */}</header>
         <main>

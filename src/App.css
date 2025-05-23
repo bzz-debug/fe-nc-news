@@ -102,3 +102,14 @@
   border: 1px dashed gray;
   padding-top: 5px;
 }
+
+.topic-buttons {
+  margin: 0 50px 0 50px;
+  font-size: 2rem;
+  text-decoration: underline;
+}
+
+#sort-by-dropdown {
+  margin-bottom: 65px;
+  margin-top: -60px;
+}

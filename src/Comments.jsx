@@ -1,11 +1,11 @@
-import { deleteComment } from "./api";
-import { useState } from "react";
+import { deleteComment } from './api';
+import { useState } from 'react';
 
-function Comments({ comment, loggedInUser }) {
+function Comments({ comment, loggedInUser, storedLoggedInUser }) {
   const { comment_id } = comment;
   const [isDeleted, setIsDeleted] = useState(false);
 
-  // console.log(comment_id);
+  // console.log(storedLoggedInUser);
 
   const handleDelete = (event) => {
     setIsDeleted(true);

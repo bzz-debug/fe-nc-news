@@ -1,12 +1,18 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: "https://bzz-nc-news.onrender.com/api",
+  baseURL: 'https://bzz-nc-news.onrender.com/api',
 });
 
 export const getArticles = (topicName) => {
   return api.get(
     `https://bzz-nc-news.onrender.com/api/articles?topic=${topicName}`
+  );
+};
+
+export const getArticlesSorted = (value, orderBy) => {
+  return api.get(
+    `https://bzz-nc-news.onrender.com/api/articles?sort_by=${value}&order=${orderBy}`
   );
 };
 

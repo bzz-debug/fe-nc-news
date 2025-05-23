@@ -90,16 +90,24 @@ function ArticleList({ articleId, setArticleId }) {
       ) : (
         <div>
           <header>
-            <Link to="/articles/">All</Link>
-            <Link to="/articles/cooking">Cooking</Link>
-            <Link to="/articles/coding">Coding</Link>
-            <Link to="/articles/football">Football</Link>
+            <Link className="topic-buttons" to="/articles/">
+              All
+            </Link>
+            <Link className="topic-buttons" to="/articles/cooking">
+              Cooking
+            </Link>
+            <Link className="topic-buttons" to="/articles/coding">
+              Coding
+            </Link>
+            <Link className="topic-buttons" to="/articles/football">
+              Football
+            </Link>
           </header>
           <div id="article-wrapper">
             <span>
               {' '}
               <h1 id="article-list-title">
-                {topicName ? topic.toUpperCase() : 'ALL'} ARTICLES
+                {topic ? topic.toUpperCase() : 'ALL'} ARTICLES
               </h1>{' '}
               <form action="" id="sort-by-dropdown">
                 <label htmlFor="SORT BY">SORT BY</label>

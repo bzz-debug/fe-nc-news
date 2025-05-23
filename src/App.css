@@ -113,3 +113,9 @@
   margin-bottom: 65px;
   margin-top: -60px;
 }
+
+header,
+body,
+footer {
+  background-color: brown;
+}

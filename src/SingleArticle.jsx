@@ -183,11 +183,11 @@ function SingleArticle() {
                 </div>
               ) : (
                 <p>
-                  Please
+                  Please{' '}
                   <Link to="/">
-                    <button> Log in</button>
-                  </Link>
-                  to post a comment{' '}
+                    <button id="single-article-login-button"> Log in</button>
+                  </Link>{' '}
+                  to post a comment
                 </p>
               )}
 

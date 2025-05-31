@@ -36,6 +36,7 @@ function App() {
         }}
       >
         <header>
+          <div id="first-spacer"></div>
           <span id="nav-bar-span-1">
             <Link to="/">
               <nav>Home</nav>
@@ -57,12 +58,13 @@ function App() {
               </button>
             </span>
           ) : (
-            <span>
+            <span id="nav-bar-span-3">
               <Link to="/">
                 <button id="login-button">Log In</button>
               </Link>
             </span>
           )}
+          <div id="spacer"></div>
         </header>
         <main>
           <Routes>

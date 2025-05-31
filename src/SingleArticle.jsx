@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 import api, {
   getArticleById,
@@ -117,7 +117,7 @@ function SingleArticle() {
           <h1>{article.title}</h1>
           <h3>Author: {article.author}</h3>
           <div className="article-body-wrapper">
-            <p>{article.body}</p>
+            <p className="article-body">{article.body}</p>
             <p className="extras">
               <b>
                 votes:{' '}
@@ -159,31 +159,34 @@ function SingleArticle() {
                 <div id="new-comment-wrapper">
                   <h2>post a comment!</h2>
                   <form>
-                    <label htmlFor="">
-                      Your comment:
+                    <div id="comment-div">
                       <textarea
                         name="body"
                         id=""
                         onChange={handleType}
                       ></textarea>
-                    </label>{' '}
-                    {commentPosted ? (
-                      <p>comment posted!</p>
-                    ) : (
-                      <button
-                        type="submit"
-                        id="comment-submit-button"
-                        onClick={handleSubmitComment}
-                      >
-                        Submit
-                      </button>
-                    )}
+
+                      {commentPosted ? (
+                        <p id="comment-posted">comment posted!</p>
+                      ) : (
+                        <button
+                          type="submit"
+                          id="comment-submit-button"
+                          onClick={handleSubmitComment}
+                        >
+                          Submit
+                        </button>
+                      )}
+                    </div>
                     {commentErr ? <p> {commentErr} </p> : null}
                   </form>
                 </div>
               ) : (
                 <p>
-                  Please <button> Log in</button>
+                  Please
+                  <Link to="/">
+                    <button> Log in</button>
+                  </Link>
                   to post a comment{' '}
                 </p>
               )}

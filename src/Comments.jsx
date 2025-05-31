@@ -21,7 +21,7 @@ function Comments({ comment, loggedInUser, storedLoggedInUser }) {
             <b>{comment.author}:</b>
           </span>
           <span> {comment.body}</span>
-          <p>
+          <p id="votes">
             <u>Votes: {comment.votes}</u>
           </p>
           {loggedInUser === comment.author ? (

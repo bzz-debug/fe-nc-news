@@ -1,24 +1,24 @@
-import { useParams, Link } from 'react-router-dom';
-import { useEffect, useState, useContext } from 'react';
+import { useParams, Link } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
 import api, {
   getArticleById,
   getCommentsByArticleId,
   patchApiVotesDown,
   patchApiVotesUp,
   postNewComment,
-} from './api';
-import Comments from './Comments';
-import { LogInContext } from './LoggedInUser';
+} from "./api";
+import Comments from "./Comments";
+import { LogInContext } from "./LoggedInUser";
 
 function SingleArticle() {
-  const [article, setArticle] = useState('');
+  const [article, setArticle] = useState("");
   const [commentsList, setCommentsList] = useState([]);
   const [hasUpVoted, setHasUpVoted] = useState(false);
   const [hasDownVoted, setHasDownVoted] = useState(false);
   const [err, setErr] = useState(false);
   const [commentData, setCommentData] = useState({
-    username: '',
-    body: '',
+    username: "",
+    body: "",
   });
   const [renderedCommentData, setRenderedCommentData] = useState({});
   const [commentErr, setCommentErr] = useState(false);
@@ -120,7 +120,7 @@ function SingleArticle() {
             <p className="article-body">{article.body}</p>
             <p className="extras">
               <b>
-                votes:{' '}
+                votes:{" "}
                 {hasUpVoted && !err
                   ? article.votes + 1
                   : hasDownVoted && !err
@@ -131,8 +131,8 @@ function SingleArticle() {
             {err ? (
               <div>
                 <p>Request failed, please try again</p>
-                <button onClick={handleUpVote}>upvote</button>
-                <button onClick={handleDownVote}>downvote</button>
+                <button onClick={handleUpVote}>👍🏼</button>
+                <button onClick={handleDownVote}>👎🏼</button>
               </div>
             ) : hasUpVoted || hasDownVoted ? (
               <p> Your vote has been counted! </p>
@@ -143,14 +143,14 @@ function SingleArticle() {
                   id="upvote"
                   onClick={handleUpVote}
                 >
-                  upvote
+                  👍🏼
                 </button>
                 <button
                   className="vote-button"
                   id="downvote"
                   onClick={handleDownVote}
                 >
-                  downvote
+                  👎🏼
                 </button>
               </div>
             )}
@@ -183,10 +183,10 @@ function SingleArticle() {
                 </div>
               ) : (
                 <p>
-                  Please{' '}
+                  Please{" "}
                   <Link to="/">
                     <button id="single-article-login-button"> Log in</button>
-                  </Link>{' '}
+                  </Link>{" "}
                   to post a comment
                 </p>
               )}
